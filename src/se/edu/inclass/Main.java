@@ -19,10 +19,11 @@ public class Main {
         DataManager dm = new DataManager("./data/data.txt");
         ArrayList<Task> tasksData = dm.loadData();
 
-        printData(tasksData);
+
         System.out.println();
         System.out.println("Printing deadlines before sorting");
         printDeadlines(tasksData);
+        System.out.println("Total number of values " + countDeadlineUsingStream(tasksData));
 
         System.out.println("Total number of deadlines: " + countDeadlines(tasksData));
 
@@ -32,8 +33,17 @@ public class Main {
         ArrayList<Task> filteredList = filterTaskListUsingStreams(tasksData, "11");
         System.out.println("\n Filtered list of tasks: ");
         printData(filteredList);
+        printData(tasksData);
+        printDataUsingStream(tasksData);
     }
 
+    private static int countDeadlineUsingStream(ArrayList<Task> tasks) {
+        int count =(int)tasks.stream()
+                .filter(t -> t instanceof Deadline)
+                .count();
+
+        return count;
+    }
     private static int countDeadlines(ArrayList<Task> tasksData) {
         int count = 0;
         for (Task t : tasksData) {
@@ -45,12 +55,20 @@ public class Main {
     }
 
     public static void printData(ArrayList<Task> tasksData) {
+        System.out.println("Printing data using iteration");
         for (Task t : tasksData) {
             System.out.println(t);
         }
     }
 
+    public static void printDataUsingStream (ArrayList<Task> tasks) {
+        System.out.println("Printing data using streams");
+        tasks.stream() // Convert to stream
+                .forEach(System.out::println);
+        //tasks.parallelStream() // Good for large amounts of data
+    }
     public static void printDeadlines(ArrayList<Task> tasksData) {
+        System.out.println("Printing data using iteration");
         for (Task t : tasksData) {
             if (t instanceof Deadline) {
                 System.out.println(t);
@@ -58,6 +76,7 @@ public class Main {
         }
     }
     public static void printDeadlinesUsingStream(ArrayList<Task> tasks) {
+        System.out.println("Printing data using streams");
         tasks.stream()
                 .filter(t -> t instanceof Deadline)
                 .sorted((a, b) -> a.getDescription().compareToIgnoreCase(b.getDescription()))
