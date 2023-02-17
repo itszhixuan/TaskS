@@ -43,16 +43,31 @@ public class Main {
     }
 
     public static void printData(ArrayList<Task> tasksData) {
+        System.out.println("Printing data using iteration");
         for (Task t : tasksData) {
             System.out.println(t);
         }
     }
 
+    public static void printDataUsingStream (ArrayList<Task> tasks) {
+        System.out.println("Printing data using streams");
+        tasks.stream() // Convert to stream
+                .forEach(System.out::println);
+        //tasks.parallelStream() // Good for large amounts of data
+    }
     public static void printDeadlines(ArrayList<Task> tasksData) {
+        System.out.println("Printing data using iteration");
         for (Task t : tasksData) {
             if (t instanceof Deadline) {
                 System.out.println(t);
             }
         }
+    }
+
+    public static void printDeadlinesUsingString(ArrayList<Task> tasks) {
+        System.out.println("Printing data using streams");
+        tasks.stream()
+                .filter(t -> t instanceof Deadline) // Filtering based on this check
+                .forEach(System.out::println);
     }
 }
